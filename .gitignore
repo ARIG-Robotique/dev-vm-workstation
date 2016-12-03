@@ -1,0 +1,4 @@
+# Fichier de build
+build/packer*
+build/packer_cache/
+build/output-*/
