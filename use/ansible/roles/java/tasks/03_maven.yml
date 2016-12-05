@@ -1,0 +1,41 @@
+- name: "Vérification présence Maven {{ workstation_tools_maven_version }}"
+  stat:
+    path: "{{ workstation_software_root_directory }}/apache-maven-{{ workstation_tools_maven_version }}"
+  register: maven_dir
+
+- name: Téléchargement de maven
+  get_url:
+    url: "{{ download_url_maven }}"
+    dest: "{{ workstation_download_directory }}/{{ download_url_maven | basename }}"
+  when: not maven_dir.stat.exists
+
+- name: Décompression de l'archive
+  unarchive:
+    src: "{{ workstation_download_directory }}/{{ download_url_maven | basename }}"
+    dest: "{{ workstation_software_root_directory }}"
+    owner: "{{ workstation_developper_user_name }}"
+    group: "{{ workstation_developper_group_name }}"
+    copy: no
+  when: not maven_dir.stat.exists
+
+- name: Création du lien symbolique pointant sur la bonne version
+  file:
+   src: "{{ workstation_software_root_directory }}/apache-maven-{{ workstation_tools_maven_version }}"
+   path: "{{ workstation_software_root_directory }}/maven"
+   state: link
+
+- name: Ajout de maven dans l'environnement
+  template:
+    src: etc/profile.d/maven.sh
+    dest: /etc/profile.d/maven.sh
+
+- name: Installation de maven bash completion
+  git:
+    repo: "{{ git_repo_maven_completion }}"
+    dest: "{{ workstation_software_root_directory }}/maven-bash-completion"
+
+- name: Lien symbolique pour Maven Bash Completion
+  file:
+    src: "{{ workstation_software_root_directory }}/maven-bash-completion/bash_completion.bash"
+    dest: /etc/bash_completion.d/maven
+    state: link

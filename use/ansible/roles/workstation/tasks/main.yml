@@ -1,0 +1,23 @@
+- name: Configuration système
+  include: 01_system.yml
+
+- name: Configuration minimales Workstation
+  include: 02_base.yml
+
+- name: Installation Google Chrome
+  include: 04_chrome.yml
+
+- name: Installation de GIT
+  include: 05_git.yml
+
+- name: Installation de PowerLine
+  include: 06_powerline.yml
+
+- name: Configuration Gnome Shell
+  include: 07_gnome.yml
+
+- name: Installation de Atom
+  include: 08_atom.yml
+
+- name: Installation de GitKraken
+  include: 12_git_kraken.yml

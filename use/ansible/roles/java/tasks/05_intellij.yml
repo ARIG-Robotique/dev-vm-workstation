@@ -1,0 +1,39 @@
+- name: "Vérification présence IntelliJ IDEA {{ workstation_ide_intellij_version }}"
+  stat:
+    path: "{{ workstation_software_root_directory }}/idea-IU-{{ workstation_ide_intellij_build_number }}"
+  register: intellij_dir
+
+- name: Téléchargement de IntelliJ
+  get_url:
+    url: "{{ download_url_intellij }}"
+    dest: "{{ workstation_download_directory }}/{{ download_url_intellij | basename }}"
+  when: not intellij_dir.stat.exists
+
+- name: Décompression de l'archive
+  unarchive:
+    src: "{{ workstation_download_directory }}/{{ download_url_intellij | basename }}"
+    dest: "{{ workstation_software_root_directory }}"
+    owner: "{{ workstation_developper_user_name }}"
+    group: "{{ workstation_developper_group_name }}"
+    copy: no
+  when: not intellij_dir.stat.exists
+
+- name: Modification des droits des éxécutables IntelliJ
+  file:
+    path: "{{ workstation_software_root_directory }}/idea-IU-{{ workstation_ide_intellij_build_number }}/bin/{{ item }}"
+    mode: ugo+x
+  with_items:
+    - idea.sh
+    - fsnotifier
+    - fsnotifier64
+
+- name: Création du lien symbolique IntelliJ sur la bonne version
+  file:
+   src: "{{ workstation_software_root_directory }}/idea-IU-{{ workstation_ide_intellij_build_number }}"
+   path: "{{ workstation_software_root_directory }}/intellij"
+   state: link
+
+- name: Ajout d'IntelliJ dans le menu
+  template:
+    src: usr/share/applications/intellij.desktop
+    dest: /usr/share/applications/intellij.desktop

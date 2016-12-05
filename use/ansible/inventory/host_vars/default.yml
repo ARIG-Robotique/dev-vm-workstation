@@ -1,0 +1,15 @@
+# Variables global
+workstation_developper_user_name: arig-dev
+workstation_developper_group_name: arig-dev
+
+# Répertoire de base
+workstation_software_root_directory: /usr/share/arig
+workstation_work_directory: /var/arig
+
+workstation_download_directory: "{{ workstation_work_directory }}/download"
+
+# Listes des répertoires de la workstation
+workstation_directories:
+  - "{{ workstation_software_root_directory }}"
+  - "{{ workstation_work_directory }}"
+  - "{{ workstation_download_directory }}"

@@ -1,0 +1,47 @@
+- name: Contrôle présence GitKraken en local
+  stat:
+    path: "{{ workstation_download_directory }}/{{ download_url_git_kraken | basename }}"
+  register: git_kraken_download
+
+- name: Téléchargement de GitKraken
+  get_url:
+    url: "{{ download_url_git_kraken }}"
+    dest: "{{ workstation_download_directory }}"
+  when: not git_kraken_download.stat.exists
+
+- name: Décompréssion de l'archive
+  command: "tar xvzf {{ workstation_download_directory }}/{{ download_url_git_kraken | basename }} --directory {{ workstation_software_root_directory }}"
+  when: not git_kraken_download.stat.exists
+
+- name: Contrôle présence GitKraken extract basique
+  stat:
+    path: "{{ workstation_software_root_directory }}/gitkraken"
+  register: git_kraken_extracted
+
+- name: Droit de l'extraction
+  file:
+    path: "{{ workstation_software_root_directory }}/gitkraken"
+    owner: "{{ workstation_developper_user_name }}"
+    group: "{{ workstation_developper_group_name }}"
+    recurse: true
+  when: git_kraken_extracted.stat.exists and not git_kraken_extracted.stat.islnk
+
+- name: Renommage du répertoire car il ne contient pas la version
+  command: "mv {{ workstation_software_root_directory }}/gitkraken {{ workstation_software_root_directory }}/gitkraken-{{ workstation_gitkraken_version }}"
+  when: git_kraken_extracted.stat.exists and not git_kraken_extracted.stat.islnk
+
+- name: Création du lien symbolique pour GitKraken
+  file:
+    src: "{{ workstation_software_root_directory }}/gitkraken-{{ workstation_gitkraken_version }}"
+    path: "{{ workstation_software_root_directory }}/gitkraken"
+    state: link
+
+- name: Download Icon
+  get_url:
+    url: https://lh3.googleusercontent.com/-HZqGOtQzL0Q/VhoGwdvNvzI/AAAAAAAAYg8/5ZGyXaifmA0/s506/git_kraken.png
+    dest: "{{ workstation_software_root_directory }}/gitkraken/icon.png"
+
+- name: Menu de Git Kraken
+  template:
+    src: usr/share/applications/GitKraken.desktop
+    dest: /usr/share/applications/GitKraken.desktop

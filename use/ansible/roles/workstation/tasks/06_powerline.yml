@@ -1,0 +1,33 @@
+- name: Installation de PowerLine
+  dnf:
+    name: "{{ item }}"
+  with_items: "{{ workstation_powerline_packages }}"
+
+- name: Configure powerline (bash)
+  template:
+    src: etc/xdg/powerline/config-bash.json
+    dest: /etc/xdg/powerline/config.json
+
+- name: Activation de powerline
+  template:
+    src: etc/profile.d/z99-powerline.sh
+    dest: /etc/profile.d/z99-powerline.sh
+
+- name: Contrôle présence configuration Powerline VIM
+  command: bash -c 'grep "Configuration powerline" /etc/vimrc | wc -l'
+  register: powerline_vim_exist
+
+- name: Configuration de powerline dans Vim
+  blockinfile:
+    dest: /etc/vimrc
+    marker: '" {mark} ANSIBLE MANAGED BLOCK'
+    block: |
+      " Configuration powerline VIM
+      python from powerline.vim import setup as powerline_setup
+      python powerline_setup()
+      python del powerline_setup
+      set laststatus=2
+      set t_Co=256
+      " Fin config powerline
+    state: present
+  when: "{{ powerline_vim_exist.stdout }} == 0"

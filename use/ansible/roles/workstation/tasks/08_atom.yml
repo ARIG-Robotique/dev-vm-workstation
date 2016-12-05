@@ -1,0 +1,15 @@
+- name: "Vérification présence RPM Atom {{ workstation_atom_version }}"
+  stat:
+    path: "{{ workstation_software_root_directory }}/{{ workstation_atom_version }}-{{ download_url_atom | basename }}"
+  register: atom_rpm
+
+- name: Téléchargement de Atom RPM
+  get_url:
+    url: "{{ download_url_atom }}"
+    dest: "{{ workstation_download_directory }}/{{ workstation_atom_version }}-{{ download_url_atom | basename }}"
+  when: not atom_rpm.stat.exists
+
+- name: Installation de Atom
+  dnf:
+    name: "{{ workstation_download_directory }}/{{ workstation_atom_version }}-{{ download_url_atom | basename }}"
+  when: not atom_rpm.stat.exists

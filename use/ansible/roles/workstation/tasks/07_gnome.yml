@@ -1,0 +1,5 @@
+# Configuration général Gnome
+- name: Installation des paquets de base environnement Gnome
+  dnf:
+    name: "{{ item }}"
+  with_items: "{{ workstation_gnome_packages }}"

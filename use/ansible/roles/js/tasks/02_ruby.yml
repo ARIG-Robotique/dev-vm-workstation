@@ -1,0 +1,10 @@
+- name: Installation de Ruby
+  dnf:
+    name: "{{ item }}"
+  with_items: "{{ workstation_ruby_packages }}"
+
+- name: Installation des Gems
+  gem:
+    name: "{{ item.name }}"
+    user_install: no
+  with_items: "{{ workstation_gem_packages }}"

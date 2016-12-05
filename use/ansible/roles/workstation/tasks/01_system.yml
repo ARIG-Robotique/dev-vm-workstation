@@ -1,0 +1,20 @@
+- name: "Ajout de l'utilisateur {{ workstation_developper_user_name }} dans le groupe wheel (admin de la machine)"
+  user:
+    name: "{{ workstation_developper_user_name }}"
+    groups: wheel
+    append: yes
+
+- name: Génération fichiers sysctl avec des commentaires pour lecture sans le code source
+  template:
+    src: etc/sysctl.d/90-arig.conf
+    dest: /etc/sysctl.d/90-arig.conf
+  with_items: "{{ workstation_sysctl_config }}"
+
+- name: Configuration sysctl immediatement
+  sysctl:
+    sysctl_file: /etc/sysctl.d/90-arig.conf
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+    reload: yes
+  with_items: "{{ workstation_sysctl_config }}"

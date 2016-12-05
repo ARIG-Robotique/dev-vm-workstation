@@ -1,0 +1,8 @@
+- name: Installation de Node
+  include: 01_node.yml
+
+- name: Installation de Ruby
+  include: 02_ruby.yml
+
+- name: Installation de Phantom JS
+  include: 03_phantomjs.yml

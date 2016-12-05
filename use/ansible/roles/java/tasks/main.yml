@@ -1,0 +1,15 @@
+- name: Installation Java
+  dnf:
+    name: "java-{{ workstation_openjdk_major_release }}-openjdk-devel"
+
+# ANT
+- name: Installation Apache ANT
+  include: 02_ant.yml
+
+# Maven
+- name: Installation Apache Maven
+  include: 03_maven.yml
+
+# Intellij
+- name: Installation JetBrains IntelliJ IDEA
+  include: 05_intellij.yml

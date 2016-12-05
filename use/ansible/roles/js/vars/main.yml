@@ -1,0 +1,28 @@
+# Version des outils JavaScript
+workstation_tools_nvm_version: v0.32.1
+workstation_tools_node_version: v5.6.0
+workstation_tools_phantomjs_version : 2.1.1
+
+# Git repositories
+git_repo_nvm: https://github.com/creationix/nvm.git
+
+# NPM packages
+workstation_npm_packages:
+  - {name: 'gulp-cli', version: '1.2.2'}
+  - {name: 'grunt-cli', version: '1.2.0'}
+
+# PhantomJS
+download_url_phantomjs: "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-{{ workstation_tools_phantomjs_version }}-{{ ansible_system | lower }}-{{ ansible_architecture }}.tar.bz2"
+
+# Ruby packages
+workstation_ruby_packages:
+  - ruby
+  - ruby-devel
+
+# Workstation system build packages
+workstation_system_build_packages :
+  - fontforge
+
+workstation_gem_packages:
+  - {name: 'compass'}
+  - {name: 'bundler'}

@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Intellij IDEA {{ workstation_ide_intellij_version }}
+Icon={{ workstation_software_root_directory }}/intellij/bin/idea.png
+Exec="{{ workstation_software_root_directory }}/intellij/bin/idea.sh" %f
+Comment=IntelliJ {{ workstation_ide_intellij_version }}
+Categories=GNOME;GTK;Development;
+Terminal=false
+StartupWMClass=jetbrains-idea

@@ -1,0 +1,84 @@
+# Package minimum de la workstation
+workstation_base_packages:
+  - vim
+  - vim-enhanced
+  - nano
+  - nmap
+  - htop
+
+# Package utilisation de Git
+workstation_git_packages:
+  - git
+  - gitg
+  - gitflow
+  - kdiff3
+
+workstation_gitkraken_version: 1.9.1
+download_url_git_kraken: https://release.gitkraken.com/linux/gitkraken-amd64.tar.gz
+
+workstation_atom_version: 1.12.6
+download_url_atom: "https://github.com/atom/atom/releases/download/v{{ workstation_atom_version }}/atom.{{ ansible_architecture }}.rpm"
+
+# Configuration de Git
+workstation_git_configs:
+  - "git config --global push.default simple"
+  - "git config --global mergetool.keepBackup false"
+  - "git config --global rerere.enabled true"
+  - "git config --global core.editor vim"
+
+# Package utilisation Powerline
+workstation_powerline_packages:
+  - powerline
+  - vim-powerline
+  - tmux-powerline
+
+# Package utilisation de Gnome
+workstation_gnome_packages:
+  - gnome-shell-extension-alternate-tab
+  - gnome-shell-extension-apps-menu
+  - gnome-shell-extension-common
+  - gnome-shell-extension-drive-menu
+  - gnome-shell-extension-launch-new-instance
+  - gnome-shell-extension-places-menu
+  - gnome-terminal-nautilus
+  - gnome-tweak-tool
+  - gedit
+  - gedit-beesu-plugin
+  - gedit-code-assistance
+  - gedit-plugin-bookmarks
+  - gedit-plugin-bracketcompletion
+  - gedit-plugin-charmap
+  - gedit-plugin-codecomment
+  - gedit-plugin-colorpicker
+  - gedit-plugin-colorschemer
+  - gedit-plugin-commander
+  - gedit-plugin-dashboard
+  - gedit-plugin-drawspaces
+  - gedit-plugin-findinfiles
+  - gedit-plugin-git
+  - gedit-plugin-joinlines
+  - gedit-plugin-multiedit
+  - gedit-plugins
+  - gedit-plugins-data
+  - gedit-plugin-smartspaces
+  - gedit-plugin-synctex
+  - gedit-plugin-terminal
+  - gedit-plugin-textsize
+  - gedit-plugin-wordcompletion
+  - gedit-plugin-zeitgeist
+
+# Repositories
+workstation_additional_repositories:
+  - baseUrl: http://download1.rpmfusion.org/free/fedora
+    rpmName: "rpmfusion-free-release-{{ ansible_distribution_version }}.noarch.rpm"
+  - baseUrl: http://download1.rpmfusion.org/nonfree/fedora
+    rpmName: "rpmfusion-nonfree-release-{{ ansible_distribution_version }}.noarch.rpm"
+
+workstation_sysctl_config:
+  - key: fs.inotify.max_user_watches
+    value: 2097152
+    comment: "# Configuration de la taille du watcher de notification par utilisateur.\n# Utilisé par les produits JetBrains pour les synchro filesystem.\n# Configuration à 2Mo (defaut 8Ko)"
+
+# Git repositories
+git_repo_gws: https://github.com/StreakyCobra/gws.git
+git_repo_mu: https://github.com/fabioz/mu-repo.git

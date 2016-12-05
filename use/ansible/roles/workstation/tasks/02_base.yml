@@ -1,0 +1,30 @@
+- name: Création des répertoires Workstation
+  file:
+    path: "{{ item }}"
+    state: directory
+    group: "{{ workstation_developper_group_name }}"
+    mode: g=rwx
+  with_items: "{{ workstation_directories }}"
+
+- name: Vérification présence repository additionel
+  stat:
+    path: "{{ workstation_download_directory }}/{{ item.rpmName }}"
+  register: repo_additional
+  with_items: "{{ workstation_additional_repositories }}"
+
+- name: Download repository additionel
+  get_url:
+    url: "{{ item.item.baseUrl }}/{{ item.item.rpmName }}"
+    dest: "{{ workstation_download_directory }}/{{ item.item.rpmName }}"
+  when: not item.stat.exists
+  with_items: "{{ repo_additional.results }}"
+
+- name: Installation des repos additionel
+  dnf:
+    name: "{{ workstation_download_directory }}/{{ item.rpmName }}"
+  with_items: "{{ workstation_additional_repositories }}"
+
+- name: Installation des paquets de base
+  dnf:
+    name: "{{ item }}"
+  with_items: "{{ workstation_base_packages }}"

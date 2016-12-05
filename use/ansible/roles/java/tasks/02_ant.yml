@@ -1,0 +1,30 @@
+- name: "Vérification présence ANT {{ workstation_tools_ant_version }}"
+  stat:
+    path: "{{ workstation_software_root_directory }}/apache-ant-{{ workstation_tools_ant_version }}"
+  register: ant_dir
+
+- name: Téléchargement de ant
+  get_url:
+    url: "{{ download_url_ant }}"
+    dest: "{{ workstation_download_directory }}/{{ download_url_ant | basename }}"
+  when: not ant_dir.stat.exists
+
+- name: Décompression de l'archive
+  unarchive:
+    src: "{{ workstation_download_directory }}/{{ download_url_ant | basename }}"
+    dest: "{{ workstation_software_root_directory }}"
+    owner: "{{ workstation_developper_user_name }}"
+    group: "{{ workstation_developper_group_name }}"
+    copy: no
+  when: not ant_dir.stat.exists
+
+- name: Création du lien symbolique pour ANT
+  file:
+   src: "{{ workstation_software_root_directory }}/apache-ant-{{ workstation_tools_ant_version }}"
+   path: "{{ workstation_software_root_directory }}/ant"
+   state: link
+
+- name: Ajout de ant dans l'environnement
+  template:
+    src: etc/profile.d/ant.sh
+    dest: /etc/profile.d/ant.sh

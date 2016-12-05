@@ -1,0 +1,10 @@
+- name: Provision de la station de dev ARIG
+  hosts: all
+  become: true
+  become_user: root
+  connection: local
+
+  roles:
+    - workstation
+    - java
+    - js

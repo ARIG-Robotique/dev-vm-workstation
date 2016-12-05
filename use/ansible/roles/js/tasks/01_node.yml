@@ -1,0 +1,29 @@
+- name: "Clone du repository Nvm version {{ workstation_tools_nvm_version }}"
+  git:
+    repo: "{{ git_repo_nvm }}"
+    dest: "{{ workstation_software_root_directory }}/nvm"
+    version: "{{ workstation_tools_nvm_version }}"
+
+- name: On ajoute nvm dans le path
+  template:
+    src: etc/profile.d/nvm.sh
+    dest: /etc/profile.d/nvm.sh
+
+- name: On installe la version de node à utiliser
+  command: "bash -lc 'nvm install {{ workstation_tools_node_version }}'"
+
+- name: On definit la version de node à utiliser
+  command: "bash -lc 'nvm use {{ workstation_tools_node_version }}'"
+
+- name: On installe les paquets nodes nécessaires
+  npm:
+    executable: "{{ workstation_software_root_directory }}/nvm/versions/node/{{ workstation_tools_node_version }}/bin/npm"
+    global: yes
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+  with_items: "{{ workstation_npm_packages }}"
+  
+- name: On installe les dépendances système pour les outils de builds Node
+  dnf:
+    name: "{{ item }}"
+  with_items: "{{ workstation_system_build_packages }}"

@@ -1,0 +1,35 @@
+- name: Installation logiciels GIT de base
+  dnf:
+    name: "{{ item }}"
+  with_items: "{{ workstation_git_packages }}"
+
+- name: Configuration de GIT pour l'utilisateur root
+  command: "{{ item }}"
+  with_items: "{{ workstation_git_configs }}"
+
+- name: Configuration de GIT pour l'utilisateur de dev
+  command: "{{ item }}"
+  become: yes
+  become_user: "{{ workstation_developper_user_name }}"
+  with_items: "{{ workstation_git_configs }}"
+
+- name: Installation des sources de GWS (git workspace)
+  git:
+    repo: "{{ git_repo_gws }}"
+    dest: "{{ workstation_software_root_directory }}/git-workspace"
+
+- name: Lien symbolique pour GWS Bash Completion
+  file:
+    src: "{{ workstation_software_root_directory }}/git-workspace/completions/bash"
+    dest: /etc/bash_completion.d/gws
+    state: link
+
+- name: Installation de MU Repo
+  git:
+    repo: "{{ git_repo_mu }}"
+    dest: "{{ workstation_software_root_directory }}/mu-repo"
+
+- name: Déclaration des GIT Tools dans le path
+  template:
+    src: etc/profile.d/git-tools.sh
+    dest: /etc/profile.d/git-tools.sh

@@ -1,0 +1,30 @@
+- name: Vérification présence PhantomJS
+  stat:
+    path: "{{ workstation_software_root_directory }}/phantomjs-{{ workstation_tools_phantomjs_version }}-{{ ansible_system | lower }}-{{ ansible_architecture }}"
+  register: phantom_dir
+
+- name: Téléchargement de l'archive PhantomJS
+  get_url:
+    url: "{{ download_url_phantomjs }}"
+    dest: "{{ workstation_download_directory }}/{{ download_url_phantomjs | basename }}"
+  when: not phantom_dir.stat.exists
+
+- name: Désarchivage de phantom JS
+  unarchive:
+    src: "{{ workstation_download_directory }}/{{ download_url_phantomjs | basename }}"
+    dest: "{{ workstation_software_root_directory }}"
+    owner: "{{ workstation_developper_user_name }}"
+    group: "{{ workstation_developper_group_name }}"
+    copy: no
+  when: not phantom_dir.stat.exists
+
+- name: Création du lien symbolique Phantom JS sur la bonne version
+  file:
+    src: "{{ workstation_software_root_directory }}/phantomjs-{{ workstation_tools_phantomjs_version }}-{{ ansible_system | lower }}-{{ ansible_architecture }}"
+    path: "{{ workstation_software_root_directory }}/phantomjs"
+    state: link
+
+- name: Ajout de phantom JS dans le path
+  template:
+    src: etc/profile.d/phantomjs.sh
+    dest: /etc/profile.d/phantomjs.sh

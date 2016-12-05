@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=GitKraken
+Icon={{ workstation_software_root_directory }}/gitkraken/icon.png
+Exec={{ workstation_software_root_directory }}/gitkraken/gitkraken
+Comment=GitKraken
+Categories=GNOME;GTK;Development;
+Terminal=false
