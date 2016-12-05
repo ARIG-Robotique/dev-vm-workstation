@@ -1,0 +1,9 @@
+# Version des outils docker
+workstation_docker_compose_version: 1.9.0
+
+# Docker binaries dir
+workstation_docker_binaries_directory: "{{ workstation_software_root_directory }}/docker"
+
+# URLS
+download_url_compose: "https://github.com/docker/compose/releases/download/{{ workstation_docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}"
+download_url_compose_completion: "https://raw.githubusercontent.com/docker/compose/{{ workstation_docker_compose_version }}/contrib/completion/bash/docker-compose"

@@ -1,0 +1,51 @@
+- name: Création du répertoire de binaires de docker
+  file:
+    path: "{{ workstation_docker_binaries_directory }}"
+    group: "{{ workstation_developper_group_name }}"
+    mode: g=rwx
+    state: directory
+
+- name: Installation du repository pour Docker
+  template:
+    src: etc/yum.repos.d/docker.repo
+    dest: /etc/yum.repos.d/docker.repo
+
+- name: Installation de docker-engine
+  dnf:
+    name: docker-engine
+    state: present
+
+# Affectation de l'utilisateur principal au groupe docker pour ne pas devoir faire des sudo a tout va
+- name: "Création du groupe docker et ajout de {{ workstation_user.username }}"
+  user:
+    name: "{{ workstation_developper_user_name }}"
+    groups: docker
+    append: yes
+
+- name: Activation et vérification que Docker tourne
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Installation de docker-compose
+  get_url:
+    url: "{{ download_url_compose }}"
+    dest: "{{ workstation_docker_binaries_directory }}/docker-compose"
+    force: yes
+
+- name: Affectation des bons droits
+  file:
+    path: "{{ workstation_docker_binaries_directory }}/docker-compose"
+    mode: a+x
+
+- name: Ajout de compose dans le path
+  template:
+    src: etc/profile.d/docker-ext.sh
+    dest: /etc/profile.d/docker-ext.sh
+
+- name: Installation de compose bash completion
+  get_url:
+    url: "{{ download_url_compose_completion }}"
+    dest: /etc/bash_completion.d/docker-compose
+    force: yes
