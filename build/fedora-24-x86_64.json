@@ -55,6 +55,6 @@
   "post-processors": [{
     "type": "vagrant",
     "compression_level": "{{user `compression_level`}}",
-    "output": "arig-dev-fedora-workstation-24-x86_64-{{.Provider}}.box"
+    "output": "fedora-workstation-24-x86_64-{{.Provider}}.box"
   }]
 }

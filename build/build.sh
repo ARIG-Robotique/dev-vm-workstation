@@ -20,7 +20,3 @@ if [ ! -f "packer" ] ; then
 fi
 
 ./packer validate fedora-24-x86_64.json && ./packer build fedora-24-x86_64.json
-
-if [ -f "arig-dev-fedora-workstation-24-x86_64-virtualbox.box" ] ; then
-  vagrant box add arig/dev-workstation-fedora-24 arig-dev-fedora-workstation-24-x86_64-virtualbox.box
-fi
