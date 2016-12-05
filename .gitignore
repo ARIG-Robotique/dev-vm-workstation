@@ -2,3 +2,7 @@
 build/packer*
 build/packer_cache/
 build/output-*/
+build/*.box
+
+# Fichier d'usage
+use/.vagrant/
