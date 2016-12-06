@@ -5,6 +5,7 @@ workstation_base_packages:
   - nano
   - nmap
   - htop
+  - unzip
 
 # Package utilisation de Git
 workstation_git_packages:
