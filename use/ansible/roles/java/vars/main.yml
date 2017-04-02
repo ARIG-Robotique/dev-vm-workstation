@@ -2,15 +2,15 @@
 workstation_openjdk_major_release: 1.8.0
 
 # Version des outils Java
-workstation_tools_ant_version: 1.9.7
+workstation_tools_ant_version: 1.9.9
 workstation_tools_maven_version: 3.3.9
 
 # Version des IDE
-workstation_ide_intellij_version: 2016.3
-workstation_ide_intellij_build_number: 163.7743.44
+workstation_ide_intellij_version: 2016.3.6
+workstation_ide_intellij_build_number: 163.15188.11
 
 # URLS
-download_url_ant: "http://wwwftp.ciril.fr/pub/apache/ant/binaries/apache-ant-{{ workstation_tools_ant_version }}-bin.zip"
+download_url_ant: "http://ftp.ciril.fr/pub/apache/ant/binaries/apache-ant-{{ workstation_tools_ant_version }}-bin.zip"
 download_url_maven: "http://apache.mindstudios.com/maven/maven-3/{{ workstation_tools_maven_version }}/binaries/apache-maven-{{ workstation_tools_maven_version }}-bin.zip"
 download_url_intellij: "https://download.jetbrains.com/idea/ideaIU-{{ workstation_ide_intellij_version }}-no-jdk.tar.gz"
 

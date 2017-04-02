@@ -14,10 +14,10 @@ workstation_git_packages:
   - gitflow
   - kdiff3
 
-workstation_gitkraken_version: 1.9.1
+workstation_gitkraken_version: 2.2.1
 download_url_git_kraken: https://release.gitkraken.com/linux/gitkraken-amd64.tar.gz
 
-workstation_atom_version: 1.12.6
+workstation_atom_version: 1.15.0
 download_url_atom: "https://github.com/atom/atom/releases/download/v{{ workstation_atom_version }}/atom.{{ ansible_architecture }}.rpm"
 
 # Configuration de Git

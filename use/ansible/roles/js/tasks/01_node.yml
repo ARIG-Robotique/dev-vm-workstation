@@ -1,13 +1,20 @@
+- name: Contrôle présence NVM en local
+  stat:
+    path: "{{ workstation_software_root_directory }}/nvm"
+  register: nvm_installed
+
 - name: "Clone du repository Nvm version {{ workstation_tools_nvm_version }}"
   git:
     repo: "{{ git_repo_nvm }}"
     dest: "{{ workstation_software_root_directory }}/nvm"
     version: "{{ workstation_tools_nvm_version }}"
+  when: not nvm_installed.stat.exists
 
 - name: On ajoute nvm dans le path
   template:
     src: etc/profile.d/nvm.sh
     dest: /etc/profile.d/nvm.sh
+  when: not nvm_installed.stat.exists
 
 - name: On installe la version de node à utiliser
   command: "bash -lc 'nvm install {{ workstation_tools_node_version }}'"

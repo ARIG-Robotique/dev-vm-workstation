@@ -35,6 +35,7 @@
     src: "{{ workstation_software_root_directory }}/gitkraken-{{ workstation_gitkraken_version }}"
     path: "{{ workstation_software_root_directory }}/gitkraken"
     state: link
+  when: git_kraken_extracted.stat.exists and not git_kraken_extracted.stat.islnk
 
 - name: Download Icon
   get_url:

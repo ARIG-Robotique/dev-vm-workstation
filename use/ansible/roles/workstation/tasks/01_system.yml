@@ -4,6 +4,23 @@
     groups: wheel
     append: yes
 
+- name: Vérifie l'état de SELinux
+  command: getenforce
+  register: sestatus
+  changed_when: false
+
+- name: Ajout libselinux-python
+  dnf:
+    name: libselinux-python
+    state: present
+  when: 'not "Disabled" in sestatus.stdout'
+
+- name: Passe SELinux en Permissive
+  selinux:
+    policy: targeted
+    state: permissive
+  when: '"Enforcing" in sestatus.stdout'
+
 - name: Génération fichiers sysctl avec des commentaires pour lecture sans le code source
   template:
     src: etc/sysctl.d/90-arig.conf
